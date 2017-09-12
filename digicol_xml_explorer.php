@@ -354,8 +354,10 @@ EOT;
             if (! in_array($xmlns_node->nodeValue, $results[ 'all_namespaces' ]))
                 $results[ 'all_namespaces' ][ ] = $xmlns_node->nodeValue;
         
-            if (strlen($xmlns_node->prefix) > 0)
+            if ((strlen($xmlns_node->prefix) > 0) && (! isset($this->namespace_prefixes[ $xmlns_node->nodeValue ])))
+            {
                 $this->namespace_prefixes[ $xmlns_node->nodeValue ] = $xmlns_node->prefix;
+            }
         }
 
         // Start recursive processing on root node
@@ -384,7 +386,7 @@ EOT;
             if (! in_array($node->namespaceURI, $results[ 'all_namespaces' ]))
                 $results[ 'all_namespaces' ][ ] = $node->namespaceURI;
         
-            if (strlen($node->prefix) > 0)
+            if ((strlen($node->prefix) > 0) && (! isset($this->namespace_prefixes[ $node->namespaceURI ])))
                 $this->namespace_prefixes[ $node->namespaceURI ] = $node->prefix;
         }
         
