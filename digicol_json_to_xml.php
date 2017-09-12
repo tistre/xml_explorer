@@ -224,12 +224,20 @@ EOT;
         if (count($keys) === 0)
             return sprintf("%s<%s/>\n", str_repeat(' ', $level * 2), $open_tag);
         
-        // Dumb numeric array detection
+        // Dumb (numeric) array detection
     
         if (is_numeric($keys[ 0 ]))
         {
+            // Special case: An array on level 0 requires an additional root element
+            
+            if ($level === 0)
+                $result .= "<root>\n";
+            
             foreach ($keys as $key)
                 $result .= $this->jsonToXml($tag, $data[ $key ], $level);
+
+            if ($level === 0)
+                $result .= "</root>\n";
         }
         else
         {
