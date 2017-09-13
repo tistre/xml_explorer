@@ -467,8 +467,19 @@ EOT;
             if (! isset($results[ 'select' ][ $select ]))
                 $results[ 'select' ][ $select ] = array();
 
-            foreach ($xpath->query($select) as $node)
-                $results[ 'select' ][ $select ][ ] = (string) $node->nodeValue;
+            $xpath_result = $xpath->evaluate($select);
+            
+            if (is_object($xpath_result) && $xpath_result instanceof DOMNodelist)
+            {
+                foreach ($xpath_result as $node)
+                {
+                    $results[ 'select' ][ $select ][ ] = (string) $node->nodeValue;
+                }
+            }
+            elseif (! empty($xpath_result))
+            {
+                $results[ 'select' ][ $select ][ ] = (string) $xpath_result;
+            }
         }
 
         foreach ($results[ 'select' ] as $select => $values)
